@@ -79,6 +79,18 @@ app.post("/api/clear", async function(req, res) {
 })
 
 app.post("/api/order/:search", async function(req, res) {
+  let csvWriter = createCsvWriter({
+    path: './RESULTS.csv',
+    header: [
+  {id: 'TRACKINGNUMBER', title: 'TRACKINGNUMBER'},
+  {id: 'ORDERNUMBER', title: 'ORDERNUMBER'},
+  {id: 'DATE', title: 'DATE'},
+  {id: 'RECEIVER', title: 'RECEIVER'},
+  {id: 'COST', title: 'COST'},
+  {id: 'WEIGHT', title: 'WEIGHT'},
+  {id: 'RECEIVERORDERNUMBER', title: 'RECEIVERORDERNUMBER'}
+    ]
+  }); 
   let searched = req.params.search;
   let searchResults = [];
   var resultsNow = [];
@@ -113,6 +125,18 @@ app.post("/api/order/:search", async function(req, res) {
   
 })
 app.post("/api/tracking/:search", function(req, res) {
+  let csvWriter = createCsvWriter({
+    path: './RESULTS.csv',
+    header: [
+  {id: 'TRACKINGNUMBER', title: 'TRACKINGNUMBER'},
+  {id: 'ORDERNUMBER', title: 'ORDERNUMBER'},
+  {id: 'DATE', title: 'DATE'},
+  {id: 'RECEIVER', title: 'RECEIVER'},
+  {id: 'COST', title: 'COST'},
+  {id: 'WEIGHT', title: 'WEIGHT'},
+  {id: 'RECEIVERORDERNUMBER', title: 'RECEIVERORDERNUMBER'}
+    ]
+  }); 
   let searched = req.params.search;
   let searchResults = [];
   var resultsNow = [];
@@ -143,6 +167,18 @@ app.post("/api/tracking/:search", function(req, res) {
   
 })
 app.post("/api/receiver/:search", function(req, res) {
+  let csvWriter = createCsvWriter({
+    path: './RESULTS.csv',
+    header: [
+  {id: 'TRACKINGNUMBER', title: 'TRACKINGNUMBER'},
+  {id: 'ORDERNUMBER', title: 'ORDERNUMBER'},
+  {id: 'DATE', title: 'DATE'},
+  {id: 'RECEIVER', title: 'RECEIVER'},
+  {id: 'COST', title: 'COST'},
+  {id: 'WEIGHT', title: 'WEIGHT'},
+  {id: 'RECEIVERORDERNUMBER', title: 'RECEIVERORDERNUMBER'}
+    ]
+  }); 
   let searched = req.params.search;
   let searchResults = [];
   var resultsNow = [];
