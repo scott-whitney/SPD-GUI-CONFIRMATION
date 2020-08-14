@@ -101,6 +101,64 @@ app.post("/api/order/:search", function(req, res) {
 
   res.json('got it')
 })
+app.post("/api/tracking/:search", function(req, res) {
+  let searched = req.params.search;
+  let searchResults = [];
+  var resultsNow = [];
+  console.log(searched)
+
+  fs.createReadStream(backupPath)
+  .pipe(csv())
+  .on('data', (data) => resultsNow.push(data))
+  .on('end', () => {
+    
+    console.log('Backup Searched');
+    let orderMultiple = resultsNow.filter(results => results.TRACKINGNUMBER == searched)
+    searchResults = orderMultiple
+    console.log('-----')
+    console.log(searchResults)
+    console.log('------')
+
+
+    csvWriter.fileWriter.path = `./RESULTS.csv`
+    console.log('attempting to use csv-writer')
+    csvWriter.writeRecords(searchResults)
+    .then(() => {
+      console.log('Results Saved')
+    })
+  });
+  res.json('got it')
+})
+app.post("/api/receiver/:search", function(req, res) {
+  let searched = req.params.search;
+  let searchResults = [];
+  var resultsNow = [];
+  console.log(searched)
+
+  fs.createReadStream(backupPath)
+  .pipe(csv())
+  .on('data', (data) => resultsNow.push(data))
+  .on('end', () => {
+    
+    console.log('Backup Searched');
+    let orderMultiple = resultsNow.filter(results => results.RECEIVER == searched)
+    searchResults = orderMultiple
+    console.log('-----')
+    console.log(searchResults)
+    console.log('------')
+
+
+    csvWriter.fileWriter.path = `./RESULTS.csv`
+    console.log('attempting to use csv-writer')
+    csvWriter.writeRecords(searchResults)
+    .then(() => {
+      console.log('Results Saved')
+    })
+  });
+  res.json('got it')
+})
+
+
 
 
 

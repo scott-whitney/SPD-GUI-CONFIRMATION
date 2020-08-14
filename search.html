@@ -45,12 +45,13 @@
         <button class="btn btn-outline-success my-2 my-sm-0 TrackingNumber" type="submit">Tracking Number</button>
         <button class="btn btn-outline-success my-2 my-sm-0 Receiver" type="submit">Receiver</button>
       </form>
+      <button class="btn btn-outline-sucess my-2 my-sm-0 Clear" type="submit">Clear Results</button>
     </nav>
   </div>
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h4 class="panel-title">Search Results</h4>
+      <h4 class="panel-title"></h4>
     </div>
     <div class="panel-body" id="tableSection">
     </div>
@@ -75,32 +76,11 @@
 </table>
 
 
- <div class='container' id='tableResults'>
-    <div class='row'>
-      <div class="col-sm orderNumberColumn">
-        Order Number
-      </div>
-      <div class="col-sm">
-        Tracking Number
-      </div>
-      <div class="col-sm">
-        Date
-      </div>
-      <div class="col-sm">
-        Receiver
-      </div>
-      <div class="col-sm">
-        Cost
-      </div>
-      <div class="col-sm">
-        Weight
-      </div>
-      <div class="col-sm">
-        Receiver Order Number
-      </div>
+ 
+ 
 
 
-    </div>
+ 
 
   </div>
 
@@ -137,17 +117,38 @@
     $.ajax({url: currentURL + "/api/order" + `/${search}`, method: "POST"})
       .done(function(resultsData) {
         console.log(resultsData)
-        document.location.reload()
+        // document.location.reload()
+        runResultsTestQuery();
       })
   })
 
   $(".TrackingNumber").on("click", function() {
-    console.log(" Tracking Number")
+    
+    search = $('#searchInput').val()
+    console.log(search)
+    var currentURL = window.location.origin
+    $.ajax({url: currentURL + "/api/tracking" + `/${search}`, method: "POST"})
+      .done(function(resultsData) {
+        console.log(resultsData)
+        // document.location.reload()
+        runResultsTestQuery();
+      })
   })
 
   $(".Receiver").on("click", function() {
-    console.log("Receiver")
+    search = $('#searchInput').val()
+    console.log("receiver")
+    console.log(search)
+    var currentURL = window.location.origin
+    $.ajax({url: currentURL + "/api/receiver" + `/${search}`, method: "POST"})
+      .done(function(resultsData) {
+        console.log(resultsData)
+        // document.location.reload()
+        runResultsTestQuery();
+      })
   })
+
+
   function runResultsTestQuery() {
     var currentURL = window.location.origin;
     $.ajax({url: currentURL + "/api/search", method: "GET"})
