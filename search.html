@@ -40,8 +40,8 @@
   <div>
     <nav class="navbar navbar-light bg-light">
       <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0 OrderNumber" type="submit">Order Number</button>
+        <input id='searchInput'class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0 OrderNumber" id='OrderNumber'type="submit">Order Number</button>
         <button class="btn btn-outline-success my-2 my-sm-0 TrackingNumber" type="submit">Tracking Number</button>
         <button class="btn btn-outline-success my-2 my-sm-0 Receiver" type="submit">Receiver</button>
       </form>
@@ -130,7 +130,15 @@
   })
 
   $(".OrderNumber").on("click", function() {
+    search = $('#searchInput').val()
+    console.log(search)
     console.log("Order Number")
+    var currentURL = window.location.origin
+    $.ajax({url: currentURL + "/api/order" + `/${search}`, method: "POST"})
+      .done(function(resultsData) {
+        console.log(resultsData)
+        document.location.reload()
+      })
   })
 
   $(".TrackingNumber").on("click", function() {
@@ -144,9 +152,9 @@
     var currentURL = window.location.origin;
     $.ajax({url: currentURL + "/api/search", method: "GET"})
         .done(function(resultsData) {
-          console.log(resultsData)
+          
           for(var i=0; i<resultsData.length; i++){
-            console.log(i)
+            
             let newRow = $("<tr>")
               $('#tableSectionResults').append(newRow)
 

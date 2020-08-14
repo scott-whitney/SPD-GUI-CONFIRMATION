@@ -52,6 +52,9 @@ app.get("/api/update", function(req, res) {
   })
   res.json("did it update?")
 });
+
+
+
 app.get("/api/search", function(req, res) {
 
   console.log("looking for search results")
@@ -63,6 +66,40 @@ app.get("/api/search", function(req, res) {
   });
   res.json(results)
   results = []
+})
+
+app.post("/api/order/:search", function(req, res) {
+  let searched = req.params.search;
+  let searchResults = [];
+  var resultsNow = [];
+  console.log(searched)
+
+  fs.createReadStream(backupPath)
+  .pipe(csv())
+  .on('data', (data) => resultsNow.push(data))
+  .on('end', () => {
+    
+    console.log('Backup Searched');
+    let orderMultiple = resultsNow.filter(results => results.ORDERNUMBER == searched)
+    searchResults = orderMultiple
+    console.log('-----')
+    console.log(searchResults)
+    console.log('------')
+
+
+    csvWriter.fileWriter.path = `./RESULTS.csv`
+    console.log('attempting to use csv-writer')
+    csvWriter.writeRecords(searchResults)
+    .then(() => {
+      console.log('Results Saved')
+    })
+  });
+  
+
+
+
+
+  res.json('got it')
 })
 
 
