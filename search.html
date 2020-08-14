@@ -100,6 +100,7 @@
 <script text="text/javascript">
 
   $(".update").on("click", function() {
+    event.preventDefault()
     console.log("testing")
     var currentURL = window.location.origin
     console.log(currentURL);
@@ -109,58 +110,130 @@
       })
   })
 
-  $(".OrderNumber").on("click", function() {
+  $(".OrderNumber").on("click", async function() {
+    event.preventDefault()
     search = $('#searchInput').val()
     console.log(search)
     console.log("Order Number")
     var currentURL = window.location.origin
-    $.ajax({url: currentURL + "/api/order" + `/${search}`, method: "POST"})
+    await $.ajax({url: currentURL + "/api/order" + `/${search}`, method: "POST"})
       .done(function(resultsData) {
         console.log(resultsData)
-        // document.location.reload()
-        runResultsTestQuery();
+        
+        runResultsTestTwoQuery(resultsData);
+        
       })
   })
 
-  $(".TrackingNumber").on("click", function() {
-    
+  $(".TrackingNumber").on("click", async function() {
+
+    event.preventDefault()
     search = $('#searchInput').val()
     console.log(search)
     var currentURL = window.location.origin
-    $.ajax({url: currentURL + "/api/tracking" + `/${search}`, method: "POST"})
+    await $.ajax({url: currentURL + "/api/tracking" + `/${search}`, method: "POST"})
       .done(function(resultsData) {
         console.log(resultsData)
         // document.location.reload()
-        runResultsTestQuery();
+        console.log("data should be appearing here")
+        runResultsTestTwoQuery(resultsData);
       })
   })
 
-  $(".Receiver").on("click", function() {
+  $(".Receiver").on("click", async function() {
+    event.preventDefault()
     search = $('#searchInput').val()
     console.log("receiver")
     console.log(search)
     var currentURL = window.location.origin
-    $.ajax({url: currentURL + "/api/receiver" + `/${search}`, method: "POST"})
-      .done(function(resultsData) {
+    await $.ajax({url: currentURL + "/api/receiver" + `/${search}`, method: "POST"})
+   
+    
+    .done(function(resultsData) {
         console.log(resultsData)
         // document.location.reload()
-        runResultsTestQuery();
+        console.log("---Data Should be Responding here -----")
+        runResultsTestTwoQuery(resultsData)
       })
   })
+  // async function getReceiverData(search) {
+  //   
+  //   console.log("I made it")
+  //   return $.ajax({url: currentURL + "/api/receiver" + `/${search}`, method: "POST"})
+  //     .then(response => response.data);
+     
 
-  $(".Clear").on("click", function() {
-    console.log("clear")
+  // }
+
+  $(".Clear").on("click", async function() {
+    event.preventDefault()
+    location.reload()
+    // console.log("clear")
     var currentURL = window.location.origin
-    $.ajax({url: currentURL + "/api/clear", method: "POST"})
+    await $.ajax({url: currentURL + "/api/clear", method: "POST"})
     .done(function(clearData) {
       console.log("cleared")
+
       
-      runResultsTestQuery();
     })
   })
+ function runResultsTestTwoQuery(resultsData) {
+   console.log("runResultsTestTwo")
+   console.log(resultsData)
+  for(var i=0; i<resultsData.length; i++){
+            
+            let newRow = $("<tr>")
+              $('#tableSectionResults').append(newRow)
 
+            let numberLine = $(`<th>`);
+              numberLine.text(i)
+            // orderLine.addClass('col-sm');
+            numberLine.attr('id', 'NumberCol-' + i+1)
+            numberLine.attr('scope', 'row')
+            newRow.append(numberLine);
+            // $("#orderNumberCol-" + i+1).append('<p>' + resultsData[i].ORDERNUMBER + '<p>')
 
-  function runResultsTestQuery() {
+            let orderLine = $("<td>");
+              orderLine.text(resultsData[i].ORDERNUMBER)
+            orderLine.attr('id', 'OrderCol-' + i+1)
+            newRow.append(orderLine);
+
+            let trackingLine = $("<td>")
+              trackingLine.text(resultsData[i].TRACKINGNUMBER)
+            trackingLine.attr('id', 'TrackingCol-' + i+1)
+            newRow.append(trackingLine);
+
+            let dateLine = $("<td>")
+              dateLine.text(resultsData[i].DATE)
+            dateLine.attr('id', 'DateCol-' + i+1)
+            newRow.append(dateLine);
+
+            let receiverLine = $("<td>")
+              receiverLine.text(resultsData[i].RECEIVER)
+            receiverLine.attr('id', 'ReceiverCol-' + i+1)
+            newRow.append(receiverLine);
+
+            let costLine = $("<td>")
+              costLine.text(resultsData[i].COST)
+            costLine.attr('id', 'CostCol-' + i+1)
+            newRow.append(costLine);
+            
+            let weightLine = $("<td>")
+              weightLine.text(resultsData[i].WEIGHT)
+            weightLine.attr('id', 'WeightCol-' + i+1)
+            newRow.append(weightLine);
+
+            let receiverReferenceLine = $("<td>")
+              receiverReferenceLine.text(resultsData[i].RECEIVERORDERNUMBER)
+            receiverReferenceLine.attr('id', 'ReceiverRefCol-' + i+1)
+            newRow.append(receiverReferenceLine);
+          }
+
+        }
+ 
+
+  async function runResultsTestQuery() {
+    console.log("after the response?")
     var currentURL = window.location.origin;
     $.ajax({url: currentURL + "/api/search", method: "GET"})
         .done(function(resultsData) {
@@ -218,67 +291,67 @@
 
   }
 
-  function runResultsQuery() {
-    var currentURL = window.location.origin;
-    $.ajax({url: currentURL + "/api/search", method: "GET"})
-      .done(function(resultsData) {
-        console.log(resultsData)
-        for (var i=0; i<resultsData.length; i++){
-          let newRow = $("<div>");
-            newRow.addClass('row OrderRow')
-            $('#tableResults').append(newRow)
+  // function runResultsQuery() {
+  //   var currentURL = window.location.origin;
+  //   $.ajax({url: currentURL + "/api/search", method: "GET"})
+  //     .done(function(resultsData) {
+  //       console.log(resultsData)
+  //       for (var i=0; i<resultsData.length; i++){
+  //         let newRow = $("<div>");
+  //           newRow.addClass('row OrderRow')
+  //           $('#tableResults').append(newRow)
 
 
 
 
-          let orderLine = $("<div>");
-            orderLine.addClass('col-sm');
-            orderLine.attr('id', 'orderNumberCol-' + i+1)
-            newRow.append(orderLine);
-            $("#orderNumberCol-" + i+1).append('<p>' + resultsData[i].ORDERNUMBER + '<p>')
+  //         let orderLine = $("<div>");
+  //           orderLine.addClass('col-sm');
+  //           orderLine.attr('id', 'orderNumberCol-' + i+1)
+  //           newRow.append(orderLine);
+  //           $("#orderNumberCol-" + i+1).append('<p>' + resultsData[i].ORDERNUMBER + '<p>')
           
-          let trackingLine = $("<div>");
-            trackingLine.addClass('col-sm');
-            trackingLine.attr('id', 'trackingNumberCol-' + i+1)
-            newRow.append(trackingLine);
-            trackingLine.append('<p>' + resultsData[i].TRACKINGNUMBER + '<p>')
+  //         let trackingLine = $("<div>");
+  //           trackingLine.addClass('col-sm');
+  //           trackingLine.attr('id', 'trackingNumberCol-' + i+1)
+  //           newRow.append(trackingLine);
+  //           trackingLine.append('<p>' + resultsData[i].TRACKINGNUMBER + '<p>')
 
-          let DateLine = $("<div>");
-            DateLine.addClass('col-sm');
-            DateLine.attr('id', 'dateCol-' + i+1)
-            newRow.append(DateLine);
-            DateLine.append('<p>' + resultsData[i].DATE + '<p>')
+  //         let DateLine = $("<div>");
+  //           DateLine.addClass('col-sm');
+  //           DateLine.attr('id', 'dateCol-' + i+1)
+  //           newRow.append(DateLine);
+  //           DateLine.append('<p>' + resultsData[i].DATE + '<p>')
 
-          let ReceiverLine = $("<div>");
-            ReceiverLine.addClass('col-sm');
-            ReceiverLine.attr('id', 'dateCol-' + i+1)
-            newRow.append(ReceiverLine);
-            ReceiverLine.append('<p>' + resultsData[i].RECEIVER + '<p>')
+  //         let ReceiverLine = $("<div>");
+  //           ReceiverLine.addClass('col-sm');
+  //           ReceiverLine.attr('id', 'dateCol-' + i+1)
+  //           newRow.append(ReceiverLine);
+  //           ReceiverLine.append('<p>' + resultsData[i].RECEIVER + '<p>')
 
-          let CostLine = $("<div>");
-            CostLine.addClass('col-sm');
-            CostLine.attr('id', 'dateCol-' + i+1)
-            newRow.append(CostLine);
-            CostLine.append('<p>' + resultsData[i].COST + '<p>')
+  //         let CostLine = $("<div>");
+  //           CostLine.addClass('col-sm');
+  //           CostLine.attr('id', 'dateCol-' + i+1)
+  //           newRow.append(CostLine);
+  //           CostLine.append('<p>' + resultsData[i].COST + '<p>')
 
-          let WeightLine = $("<div>");
-            WeightLine.addClass('col-sm');
-            WeightLine.attr('id', 'dateCol-' + i+1)
-            newRow.append(WeightLine);
-            WeightLine.append('<p>' + resultsData[i].WEIGHT + '<p>')
+  //         let WeightLine = $("<div>");
+  //           WeightLine.addClass('col-sm');
+  //           WeightLine.attr('id', 'dateCol-' + i+1)
+  //           newRow.append(WeightLine);
+  //           WeightLine.append('<p>' + resultsData[i].WEIGHT + '<p>')
 
-          let ReceiverOrderLine = $("<div>");
-            ReceiverOrderLine.addClass('col-sm');
-            ReceiverOrderLine.attr('id', 'dateCol-' + i+1)
-            newRow.append(ReceiverOrderLine);
-            ReceiverOrderLine.append('<p>' + resultsData[i].RECEIVERORDERNUMBER + '<p>')
+  //         let ReceiverOrderLine = $("<div>");
+  //           ReceiverOrderLine.addClass('col-sm');
+  //           ReceiverOrderLine.attr('id', 'dateCol-' + i+1)
+  //           newRow.append(ReceiverOrderLine);
+  //           ReceiverOrderLine.append('<p>' + resultsData[i].RECEIVERORDERNUMBER + '<p>')
 
-        }
-      })
+  //       }
+  //     })
 
-  }
+  // }
 
-  runResultsTestQuery();
+  // runResultsTestQuery();
   
 
   

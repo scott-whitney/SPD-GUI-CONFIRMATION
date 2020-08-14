@@ -67,17 +67,18 @@ app.get("/api/search", function(req, res) {
   res.json(results)
   results = []
 })
-app.post("/api/clear", function(req, res) {
+
+app.post("/api/clear", async function(req, res) {
   console.log("begining to clear")
 
-  fs.writeFile('./RESULTS.csv', 'TRACKINGNUMBER,ORDERNUMBER,DATE,RECEIVER,COST,WEIGHT,RECEIVERORDERNUMBER', function(){console.log('done')})
+  await fs.writeFile('./RESULTS.csv', 'TRACKINGNUMBER,ORDERNUMBER,DATE,RECEIVER,COST,WEIGHT,RECEIVERORDERNUMBER', function(){console.log('done')})
 
   res.json("cleared")
 
 
 })
 
-app.post("/api/order/:search", function(req, res) {
+app.post("/api/order/:search", async function(req, res) {
   let searched = req.params.search;
   let searchResults = [];
   var resultsNow = [];
@@ -101,6 +102,7 @@ app.post("/api/order/:search", function(req, res) {
     csvWriter.writeRecords(searchResults)
     .then(() => {
       console.log('Results Saved')
+      res.json(searchResults)
     })
   });
   
@@ -108,7 +110,7 @@ app.post("/api/order/:search", function(req, res) {
 
 
 
-  res.json('got it')
+  
 })
 app.post("/api/tracking/:search", function(req, res) {
   let searched = req.params.search;
@@ -134,9 +136,11 @@ app.post("/api/tracking/:search", function(req, res) {
     csvWriter.writeRecords(searchResults)
     .then(() => {
       console.log('Results Saved')
+      console.log(searchResults)
+      res.json(searchResults)
     })
   });
-  res.json('got it')
+  
 })
 app.post("/api/receiver/:search", function(req, res) {
   let searched = req.params.search;
@@ -163,9 +167,10 @@ app.post("/api/receiver/:search", function(req, res) {
     .then(() => {
       console.log('Results Saved')
       console.log(searchResults)
+      res.json(searchResults)
     })
   });
-  res.json('got it')
+  
 })
 
 
