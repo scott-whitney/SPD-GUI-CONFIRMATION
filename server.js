@@ -67,6 +67,15 @@ app.get("/api/search", function(req, res) {
   res.json(results)
   results = []
 })
+app.post("/api/clear", function(req, res) {
+  console.log("begining to clear")
+
+  fs.writeFile('./RESULTS.csv', 'TRACKINGNUMBER,ORDERNUMBER,DATE,RECEIVER,COST,WEIGHT,RECEIVERORDERNUMBER', function(){console.log('done')})
+
+  res.json("cleared")
+
+
+})
 
 app.post("/api/order/:search", function(req, res) {
   let searched = req.params.search;
@@ -153,6 +162,7 @@ app.post("/api/receiver/:search", function(req, res) {
     csvWriter.writeRecords(searchResults)
     .then(() => {
       console.log('Results Saved')
+      console.log(searchResults)
     })
   });
   res.json('got it')

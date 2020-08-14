@@ -148,6 +148,17 @@
       })
   })
 
+  $(".Clear").on("click", function() {
+    console.log("clear")
+    var currentURL = window.location.origin
+    $.ajax({url: currentURL + "/api/clear", method: "POST"})
+    .done(function(clearData) {
+      console.log("cleared")
+      
+      runResultsTestQuery();
+    })
+  })
+
 
   function runResultsTestQuery() {
     var currentURL = window.location.origin;
