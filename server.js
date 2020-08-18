@@ -28,7 +28,7 @@ const resultsPath = 'RESULTS.csv'
 
 
 var app = express();
-var PORT = 3001;
+var PORT = process.env.PORT || 3001;
 
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
@@ -39,6 +39,9 @@ app.get("/", function(req, res) {
 app.get("/search", function(req, res) {
   res.sendFile(path.join(__dirname, "search.html"));
 });
+app.get("/subfolder", function(req, res) {
+  res.sendFile(path.join(__dirname, "subfolder.html"));
+})
 
 
 
