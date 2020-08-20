@@ -211,7 +211,7 @@ app.post("/api/receiver/:search", function(req, res) {
   });
   
 })
-
+// need to start making a duplicate - in order to connect to the second computer - this will be hard to do remotely.
 
 // app.listen(3000, '0.0.0.0', function() {
 //   console.log('Listening to port: ' + 3000);
