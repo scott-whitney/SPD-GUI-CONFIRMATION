@@ -209,7 +209,7 @@ app.get("/api/tracking/:search", async function(req, res) {
     // })
     console.log(req.params.search)
     console.log("Bringing up tracking_number from tracking");
-    connection.query(`SELECT * FROM tracking WHERE tracking_number = ${req.params.search}`, (err, rows) => {
+    connection.query(`SELECT * FROM tracking WHERE tracking_number = '${req.params.search}'`, (err, rows) => {
       if (err) throw err;
       console.log('ey?')
       console.log(rows)
