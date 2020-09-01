@@ -116,11 +116,11 @@
     console.log(search)
     console.log("Order Number")
     var currentURL = window.location.origin
-    await $.ajax({url: currentURL + "/api/order" + `/${search}`, method: "POST"})
+    await $.ajax({url: currentURL + "/api/order" + `/${search}`, method: "GET"})
       .done(function(resultsData) {
         console.log(resultsData)
         
-        runResultsTestTwoQuery(resultsData);
+        // runResultsTestTwoQuery(resultsData);
         
       })
   })

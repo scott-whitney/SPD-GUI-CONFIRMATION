@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const csv = require('csv-parser');
+var mysql = require("mysql");
 const fs = require('fs');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csvWriter = createCsvWriter({
@@ -25,6 +26,26 @@ const masterPath = 'UPS_CONFIRMATIONS.csv'
 const backupPath = 'UPS_DATA_BACKUP.csv'
 const backupFolderPath = 'UPS_DATA_ORGANIZED'
 const resultsPath = 'RESULTS.csv'
+
+var connection = mysql.createConnection({
+  host: "localhost",
+
+  // Your port; if not 3306
+  port: 3306,
+
+  // Your username
+  user: "root",
+
+  // Your password
+  // remember to change this to sacredherbtime when using at SPD
+  password: "password",
+  database: "tracking_information"
+});
+
+connection.connect(function(err) {
+  if (err) throw err;
+  console.log("connected as id " + connection.threadId + "\n");
+});
 
 
 var app = express();
@@ -81,44 +102,63 @@ app.post("/api/clear", async function(req, res) {
 
 })
 
-app.post("/api/order/:search", async function(req, res) {
-  let csvWriter = createCsvWriter({
-    path: './RESULTS.csv',
-    header: [
-  {id: 'TRACKINGNUMBER', title: 'TRACKINGNUMBER'},
-  {id: 'ORDERNUMBER', title: 'ORDERNUMBER'},
-  {id: 'DATE', title: 'DATE'},
-  {id: 'RECEIVER', title: 'RECEIVER'},
-  {id: 'COST', title: 'COST'},
-  {id: 'WEIGHT', title: 'WEIGHT'},
-  {id: 'RECEIVERORDERNUMBER', title: 'RECEIVERORDERNUMBER'}
-    ]
-  }); 
-  let searched = req.params.search;
-  let searchResults = [];
-  var resultsNow = [];
-  console.log(searched)
+app.get("/api/order/:search", async function(req, res) {
+  // let csvWriter = createCsvWriter({
+  //   path: './RESULTS.csv',
+  //   header: [
+  // {id: 'TRACKINGNUMBER', title: 'TRACKINGNUMBER'},
+  // {id: 'ORDERNUMBER', title: 'ORDERNUMBER'},
+  // {id: 'DATE', title: 'DATE'},
+  // {id: 'RECEIVER', title: 'RECEIVER'},
+  // {id: 'COST', title: 'COST'},
+  // {id: 'WEIGHT', title: 'WEIGHT'},
+  // {id: 'RECEIVERORDERNUMBER', title: 'RECEIVERORDERNUMBER'}
+  //   ]
+  // }); 
+  // let searched = req.params.search;
+  // let searchResults = [];
+  // var resultsNow = [];
+  // console.log(searched)
 
-  fs.createReadStream(backupPath)
-  .pipe(csv())
-  .on('data', (data) => resultsNow.push(data))
-  .on('end', () => {
+  // fs.createReadStream(backupPath)
+  // .pipe(csv())
+  // .on('data', (data) => resultsNow.push(data))
+  // .on('end', () => {
     
-    console.log('Backup Searched');
-    let orderMultiple = resultsNow.filter(results => results.ORDERNUMBER == searched)
-    searchResults = orderMultiple
-    console.log('-----')
-    console.log(searchResults)
-    console.log('------')
+  //   console.log('Backup Searched');
+  //   let orderMultiple = resultsNow.filter(results => results.ORDERNUMBER == searched)
+  //   searchResults = orderMultiple
+  //   console.log('-----')
+  //   console.log(searchResults)
+  //   console.log('------')
 
 
-    csvWriter.fileWriter.path = `./RESULTS.csv`
-    console.log('attempting to use csv-writer')
-    csvWriter.writeRecords(searchResults)
-    .then(() => {
-      console.log('Results Saved')
-      res.json(searchResults)
-    })
+  //   csvWriter.fileWriter.path = `./RESULTS.csv`
+  //   console.log('attempting to use csv-writer')
+  //   csvWriter.writeRecords(searchResults)
+  //   .then(() => {
+  //     console.log('Results Saved')
+  //     res.json(searchResults)
+  //   })
+
+  console.log(req.params.search)
+  console.log("Bringing up OrderNumer from tracking");
+  // connection.query("SELECT * FROM tracking", function(err, res) {
+  //     if (err) throw err;
+  //     console.table(res)
+  //     // console.log(res)
+  //     // response = res;
+  //     // console.log(response)
+  //     // res.json(res)
+  //     // res.json(res)
+      
+  // })
+  connection.query(`SELECT * FROM tracking WHERE order_number = ${req.params.search}`, (err, rows) => {
+    res.json(rows)
+  })
+
+  console.log("awaited?")
+
   });
   
 
@@ -126,7 +166,7 @@ app.post("/api/order/:search", async function(req, res) {
 
 
   
-})
+
 app.post("/api/tracking/:search", function(req, res) {
   let csvWriter = createCsvWriter({
     path: './RESULTS.csv',
