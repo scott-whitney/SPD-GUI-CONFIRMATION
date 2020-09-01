@@ -154,6 +154,7 @@ app.get("/api/order/:search", async function(req, res) {
       
   // })
   connection.query(`SELECT * FROM tracking WHERE order_number = ${req.params.search}`, (err, rows) => {
+    if (err) throw err;
     res.json(rows)
   })
 
@@ -167,48 +168,56 @@ app.get("/api/order/:search", async function(req, res) {
 
   
 
-app.post("/api/tracking/:search", function(req, res) {
-  let csvWriter = createCsvWriter({
-    path: './RESULTS.csv',
-    header: [
-  {id: 'TRACKINGNUMBER', title: 'TRACKINGNUMBER'},
-  {id: 'ORDERNUMBER', title: 'ORDERNUMBER'},
-  {id: 'DATE', title: 'DATE'},
-  {id: 'RECEIVER', title: 'RECEIVER'},
-  {id: 'COST', title: 'COST'},
-  {id: 'WEIGHT', title: 'WEIGHT'},
-  {id: 'RECEIVERORDERNUMBER', title: 'RECEIVERORDERNUMBER'}
-    ]
-  }); 
-  let searched = req.params.search;
-  let searchResults = [];
-  var resultsNow = [];
-  console.log(searched)
+app.get("/api/tracking/:search", async function(req, res) {
+  // let csvWriter = createCsvWriter({
+  //   path: './RESULTS.csv',
+  //   header: [
+  // {id: 'TRACKINGNUMBER', title: 'TRACKINGNUMBER'},
+  // {id: 'ORDERNUMBER', title: 'ORDERNUMBER'},
+  // {id: 'DATE', title: 'DATE'},
+  // {id: 'RECEIVER', title: 'RECEIVER'},
+  // {id: 'COST', title: 'COST'},
+  // {id: 'WEIGHT', title: 'WEIGHT'},
+  // {id: 'RECEIVERORDERNUMBER', title: 'RECEIVERORDERNUMBER'}
+  //   ]
+  // }); 
+  // let searched = req.params.search;
+  // let searchResults = [];
+  // var resultsNow = [];
+  // console.log(searched)
 
-  fs.createReadStream(backupPath)
-  .pipe(csv())
-  .on('data', (data) => resultsNow.push(data))
-  .on('end', () => {
+  // fs.createReadStream(backupPath)
+  // .pipe(csv())
+  // .on('data', (data) => resultsNow.push(data))
+  // .on('end', () => {
     
-    console.log('Backup Searched');
-    let orderMultiple = resultsNow.filter(results => results.TRACKINGNUMBER == searched)
-    searchResults = orderMultiple
-    console.log('-----')
-    console.log(searchResults)
-    console.log('------')
+  //   console.log('Backup Searched');
+    // let orderMultiple = resultsNow.filter(results => results.TRACKINGNUMBER == searched)
+    // searchResults = orderMultiple
+    // console.log('-----')
+    // console.log(searchResults)
+    // console.log('------')
 
 
-    csvWriter.fileWriter.path = `./RESULTS.csv`
-    console.log('attempting to use csv-writer')
-    csvWriter.writeRecords(searchResults)
-    .then(() => {
-      console.log('Results Saved')
-      console.log(searchResults)
-      res.json(searchResults)
+    // csvWriter.fileWriter.path = `./RESULTS.csv`
+    // console.log('attempting to use csv-writer')
+    // csvWriter.writeRecords(searchResults)
+    // .then(() => {
+    //   console.log('Results Saved')
+    //   console.log(searchResults)
+    //   res.json(searchResults)
+    // })
+    console.log(req.params.search)
+    console.log("Bringing up tracking_number from tracking");
+    connection.query(`SELECT * FROM tracking WHERE tracking_number = ${req.params.search}`, (err, rows) => {
+      if (err) throw err;
+      console.log('ey?')
+      console.log(rows)
+      res.json(rows)
     })
   });
   
-})
+
 app.post("/api/receiver/:search", function(req, res) {
   let csvWriter = createCsvWriter({
     path: './RESULTS.csv',
