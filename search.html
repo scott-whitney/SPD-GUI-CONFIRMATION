@@ -27,7 +27,7 @@
           <a class="nav-link" href="/search">Search</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Confirmations</a>
+          <a class="nav-link" href="/confirmations">Confirmations</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/subfolder">Create New Sub Folder</a>
@@ -146,14 +146,14 @@
     console.log("receiver")
     console.log(search)
     var currentURL = window.location.origin
-    await $.ajax({url: currentURL + "/api/receiver" + `/${search}`, method: "POST"})
+    await $.ajax({url: currentURL + "/api/receiver" + `/${search}`, method: "GET"})
    
     
     .done(function(resultsData) {
         console.log(resultsData)
-        // document.location.reload()
-        console.log("---Data Should be Responding here -----")
-        runResultsTestTwoQuery(resultsData)
+        // // document.location.reload()
+        // console.log("---Data Should be Responding here -----")
+        // runResultsTestTwoQuery(resultsData)
       })
   })
   // async function getReceiverData(search) {

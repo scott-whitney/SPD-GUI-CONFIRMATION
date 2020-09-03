@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Note Taker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.1.3/flatly/bootstrap.min.css" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary"">
+    <a class="navbar-brand" href="#">DATA UPS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Setup <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Update Backup</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/search">Search</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/confirmations">Confirmations</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/subfolder">Create New Sub Folder</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        Scott Free Software
+    </div>
+  </nav>
+  <!-- <div>
+    <nav class="navbar navbar-light bg-light">
+      <form class="form-inline">
+        <input id='searchInput'class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0 OrderNumber" id='OrderNumber'type="submit">Order Number</button>
+        <button class="btn btn-outline-success my-2 my-sm-0 TrackingNumber" type="submit">Tracking Number</button>
+        <button class="btn btn-outline-success my-2 my-sm-0 Receiver" type="submit">Receiver</button>
+      </form>
+      <button class="btn btn-outline-sucess my-2 my-sm-0 Clear" type="submit">Clear Results</button>
+    </nav>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title"></h4>
+    </div>
+    <div class="panel-body" id="tableSection">
+    </div>
+  </div> -->
+
+<!-- <table class='table'>
+  <thead>
+    <tr>
+      <th scope='col'>#</th>
+      <th scope='col'>Order Number</th>
+      <th scope='col'>Tracking Number</th>
+      <th scope='col'>Date</th>
+      <th scope='col'>Receiver</th>
+      <th scope='col'>Cost</th>
+      <th scope='col'>Weight</th>
+      <th scope='col'>Receiver Reference Number</th>
+    </tr>
+  </thead>
+  <tbody id="tableSectionResults">
+
+  </tbody>
+</table> -->
+
+
+<div class="card">
+  <h5 class="card-header">Confirmations</h5>
+  <div class="card-body">
+    <h5 class="card-title">Instructions</h5>
+    <p class="card-text">This is still being tested - clicking the create button will make a CSV file named - Confirmations.CSV in the program file location.
+      If you don't know what to do with it do not attempt. I will update this area with screenshots for a guide on how to automate the confirmation process using this file. "or ask Brent"
+    </p>
+    <a href="#" class="btn btn-primary confirmations">Confirmations</a>
+  </div>
+</div>
+ 
+
+
+ 
+
+  </div>
+
+
+
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- <script src="./assets/javascript/index.js"></script> -->
+</body>
+
+</html>
+
+<script text="text/javascript">
+
+  $(".confirmations").on("click", function() {
+    event.preventDefault()
+    var currentURL = window.location.origin
+    $.ajax({url: currentURL + "/api/confirmations", method: "GET"})
+      .done(function(csvData) {
+        console.log(csvData)
+        
+      })
+  })
+
+  // $(".OrderNumber").on("click", async function() {
+  //   event.preventDefault()
+  //   search = $('#searchInput').val()
+  //   console.log(search)
+  //   console.log("Order Number")
+  //   var currentURL = window.location.origin
+  //   await $.ajax({url: currentURL + "/api/order" + `/${search}`, method: "GET"})
+  //     .done(function(resultsData) {
+  //       console.log(resultsData)
+        
+  //       // runResultsTestTwoQuery(resultsData);
+        
+  //     })
+  // })
+
+  // $(".TrackingNumber").on("click", async function() {
+
+  //   event.preventDefault()
+  //   search = $('#searchInput').val()
+  //   console.log(search)
+  //   var currentURL = window.location.origin
+  //   await $.ajax({url: currentURL + "/api/tracking" + `/${search}`, method: "GET"})
+  //     .done(function(resultsData) {
+  //       console.log(resultsData)
+  //       // document.location.reload()
+  //       // console.log("data should be appearing here")
+  //       // runResultsTestTwoQuery(resultsData);
+  //     })
+  // })
+
+  // $(".Receiver").on("click", async function() {
+  //   event.preventDefault()
+  //   search = $('#searchInput').val()
+  //   console.log("receiver")
+  //   console.log(search)
+  //   var currentURL = window.location.origin
+  //   await $.ajax({url: currentURL + "/api/receiver" + `/${search}`, method: "GET"})
+   
+    
+  //   .done(function(resultsData) {
+  //       console.log(resultsData)
+  //       // // document.location.reload()
+  //       // console.log("---Data Should be Responding here -----")
+  //       // runResultsTestTwoQuery(resultsData)
+  //     })
+  // })
+  // async function getReceiverData(search) {
+  //   
+  //   console.log("I made it")
+  //   return $.ajax({url: currentURL + "/api/receiver" + `/${search}`, method: "POST"})
+  //     .then(response => response.data);
+     
+
+  // }
+
+  // $(".Clear").on("click", async function() {
+  //   event.preventDefault()
+  //   location.reload()
+  //   // console.log("clear")
+  //   var currentURL = window.location.origin
+  //   await $.ajax({url: currentURL + "/api/clear", method: "POST"})
+  //   .done(function(clearData) {
+  //     console.log("cleared")
+
+      
+  //   })
+  // })
+//  function runResultsTestTwoQuery(resultsData) {
+//    console.log("runResultsTestTwo")
+//    console.log(resultsData)
+//   for(var i=0; i<resultsData.length; i++){
+            
+//             let newRow = $("<tr>")
+//               $('#tableSectionResults').append(newRow)
+
+//             let numberLine = $(`<th>`);
+//               numberLine.text(i)
+//             // orderLine.addClass('col-sm');
+//             numberLine.attr('id', 'NumberCol-' + i+1)
+//             numberLine.attr('scope', 'row')
+//             newRow.append(numberLine);
+//             // $("#orderNumberCol-" + i+1).append('<p>' + resultsData[i].ORDERNUMBER + '<p>')
+
+//             let orderLine = $("<td>");
+//               orderLine.text(resultsData[i].ORDERNUMBER)
+//             orderLine.attr('id', 'OrderCol-' + i+1)
+//             newRow.append(orderLine);
+
+//             let trackingLine = $("<td>")
+//               trackingLine.text(resultsData[i].TRACKINGNUMBER)
+//             trackingLine.attr('id', 'TrackingCol-' + i+1)
+//             newRow.append(trackingLine);
+
+//             let dateLine = $("<td>")
+//               dateLine.text(resultsData[i].DATE)
+//             dateLine.attr('id', 'DateCol-' + i+1)
+//             newRow.append(dateLine);
+
+//             let receiverLine = $("<td>")
+//               receiverLine.text(resultsData[i].RECEIVER)
+//             receiverLine.attr('id', 'ReceiverCol-' + i+1)
+//             newRow.append(receiverLine);
+
+//             let costLine = $("<td>")
+//               costLine.text(resultsData[i].COST)
+//             costLine.attr('id', 'CostCol-' + i+1)
+//             newRow.append(costLine);
+            
+//             let weightLine = $("<td>")
+//               weightLine.text(resultsData[i].WEIGHT)
+//             weightLine.attr('id', 'WeightCol-' + i+1)
+//             newRow.append(weightLine);
+
+//             let receiverReferenceLine = $("<td>")
+//               receiverReferenceLine.text(resultsData[i].RECEIVERORDERNUMBER)
+//             receiverReferenceLine.attr('id', 'ReceiverRefCol-' + i+1)
+//             newRow.append(receiverReferenceLine);
+//           }
+
+//         }
+ 
+
+//   async function runResultsTestQuery() {
+//     console.log("after the response?")
+//     var currentURL = window.location.origin;
+//     $.ajax({url: currentURL + "/api/search", method: "GET"})
+//         .done(function(resultsData) {
+          
+//           for(var i=0; i<resultsData.length; i++){
+            
+//             let newRow = $("<tr>")
+//               $('#tableSectionResults').append(newRow)
+
+//             let numberLine = $(`<th>`);
+//               numberLine.text(i)
+//             // orderLine.addClass('col-sm');
+//             numberLine.attr('id', 'NumberCol-' + i+1)
+//             numberLine.attr('scope', 'row')
+//             newRow.append(numberLine);
+//             // $("#orderNumberCol-" + i+1).append('<p>' + resultsData[i].ORDERNUMBER + '<p>')
+
+//             let orderLine = $("<td>");
+//               orderLine.text(resultsData[i].ORDERNUMBER)
+//             orderLine.attr('id', 'OrderCol-' + i+1)
+//             newRow.append(orderLine);
+
+//             let trackingLine = $("<td>")
+//               trackingLine.text(resultsData[i].TRACKINGNUMBER)
+//             trackingLine.attr('id', 'TrackingCol-' + i+1)
+//             newRow.append(trackingLine);
+
+//             let dateLine = $("<td>")
+//               dateLine.text(resultsData[i].DATE)
+//             dateLine.attr('id', 'DateCol-' + i+1)
+//             newRow.append(dateLine);
+
+//             let receiverLine = $("<td>")
+//               receiverLine.text(resultsData[i].RECEIVER)
+//             receiverLine.attr('id', 'ReceiverCol-' + i+1)
+//             newRow.append(receiverLine);
+
+//             let costLine = $("<td>")
+//               costLine.text(resultsData[i].COST)
+//             costLine.attr('id', 'CostCol-' + i+1)
+//             newRow.append(costLine);
+            
+//             let weightLine = $("<td>")
+//               weightLine.text(resultsData[i].WEIGHT)
+//             weightLine.attr('id', 'WeightCol-' + i+1)
+//             newRow.append(weightLine);
+
+//             let receiverReferenceLine = $("<td>")
+//               receiverReferenceLine.text(resultsData[i].RECEIVERORDERNUMBER)
+//             receiverReferenceLine.attr('id', 'ReceiverRefCol-' + i+1)
+//             newRow.append(receiverReferenceLine);
+//           }
+
+//         })
+
+//   }
+
+  // function runResultsQuery() {
+  //   var currentURL = window.location.origin;
+  //   $.ajax({url: currentURL + "/api/search", method: "GET"})
+  //     .done(function(resultsData) {
+  //       console.log(resultsData)
+  //       for (var i=0; i<resultsData.length; i++){
+  //         let newRow = $("<div>");
+  //           newRow.addClass('row OrderRow')
+  //           $('#tableResults').append(newRow)
+
+
+
+
+  //         let orderLine = $("<div>");
+  //           orderLine.addClass('col-sm');
+  //           orderLine.attr('id', 'orderNumberCol-' + i+1)
+  //           newRow.append(orderLine);
+  //           $("#orderNumberCol-" + i+1).append('<p>' + resultsData[i].ORDERNUMBER + '<p>')
+          
+  //         let trackingLine = $("<div>");
+  //           trackingLine.addClass('col-sm');
+  //           trackingLine.attr('id', 'trackingNumberCol-' + i+1)
+  //           newRow.append(trackingLine);
+  //           trackingLine.append('<p>' + resultsData[i].TRACKINGNUMBER + '<p>')
+
+  //         let DateLine = $("<div>");
+  //           DateLine.addClass('col-sm');
+  //           DateLine.attr('id', 'dateCol-' + i+1)
+  //           newRow.append(DateLine);
+  //           DateLine.append('<p>' + resultsData[i].DATE + '<p>')
+
+  //         let ReceiverLine = $("<div>");
+  //           ReceiverLine.addClass('col-sm');
+  //           ReceiverLine.attr('id', 'dateCol-' + i+1)
+  //           newRow.append(ReceiverLine);
+  //           ReceiverLine.append('<p>' + resultsData[i].RECEIVER + '<p>')
+
+  //         let CostLine = $("<div>");
+  //           CostLine.addClass('col-sm');
+  //           CostLine.attr('id', 'dateCol-' + i+1)
+  //           newRow.append(CostLine);
+  //           CostLine.append('<p>' + resultsData[i].COST + '<p>')
+
+  //         let WeightLine = $("<div>");
+  //           WeightLine.addClass('col-sm');
+  //           WeightLine.attr('id', 'dateCol-' + i+1)
+  //           newRow.append(WeightLine);
+  //           WeightLine.append('<p>' + resultsData[i].WEIGHT + '<p>')
+
+  //         let ReceiverOrderLine = $("<div>");
+  //           ReceiverOrderLine.addClass('col-sm');
+  //           ReceiverOrderLine.attr('id', 'dateCol-' + i+1)
+  //           newRow.append(ReceiverOrderLine);
+  //           ReceiverOrderLine.append('<p>' + resultsData[i].RECEIVERORDERNUMBER + '<p>')
+
+  //       }
+  //     })
+
+  // }
+
+  // runResultsTestQuery();
+  
+
+  
+  </script>

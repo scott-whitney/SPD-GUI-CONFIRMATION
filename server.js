@@ -62,7 +62,10 @@ app.get("/search", function(req, res) {
 });
 app.get("/subfolder", function(req, res) {
   res.sendFile(path.join(__dirname, "subfolder.html"));
-})
+});
+app.get("/confirmations", function(req, res) {
+  res.sendFile(path.join(__dirname, "confirmations.html"))
+});
 
 
 
@@ -207,59 +210,70 @@ app.get("/api/tracking/:search", async function(req, res) {
     //   console.log(searchResults)
     //   res.json(searchResults)
     // })
-    console.log(req.params.search)
-    console.log("Bringing up tracking_number from tracking");
+
+
     connection.query(`SELECT * FROM tracking WHERE tracking_number = '${req.params.search}'`, (err, rows) => {
       if (err) throw err;
-      console.log('ey?')
-      console.log(rows)
       res.json(rows)
     })
   });
-  
 
-app.post("/api/receiver/:search", function(req, res) {
-  let csvWriter = createCsvWriter({
-    path: './RESULTS.csv',
-    header: [
-  {id: 'TRACKINGNUMBER', title: 'TRACKINGNUMBER'},
-  {id: 'ORDERNUMBER', title: 'ORDERNUMBER'},
-  {id: 'DATE', title: 'DATE'},
-  {id: 'RECEIVER', title: 'RECEIVER'},
-  {id: 'COST', title: 'COST'},
-  {id: 'WEIGHT', title: 'WEIGHT'},
-  {id: 'RECEIVERORDERNUMBER', title: 'RECEIVERORDERNUMBER'}
-    ]
-  }); 
-  let searched = req.params.search;
-  let searchResults = [];
-  var resultsNow = [];
-  console.log(searched)
+app.get("/api/confirmations", function(req, res) {
+  var today = new Date()
+  console.log(today)
+  res.json(today)
+  // figure out date being spit out by the UPS into MYSQL
+  // modify this date to match so you can compare it
+  // make a mysql querie that grabs everysingle tracking line with that date
+  // if there are none come back with a warning saying "no shipping data found for todays date - this may be because end of day hasn't updated the database yet"
 
-  fs.createReadStream(backupPath)
-  .pipe(csv())
-  .on('data', (data) => resultsNow.push(data))
-  .on('end', () => {
-    
-    console.log('Backup Searched');
-    let orderMultiple = resultsNow.filter(results => results.RECEIVER == searched)
-    searchResults = orderMultiple
-    console.log('-----')
-    console.log(searchResults)
-    console.log('------')
-
-
-    csvWriter.fileWriter.path = `./RESULTS.csv`
-    console.log('attempting to use csv-writer')
-    csvWriter.writeRecords(searchResults)
-    .then(() => {
-      console.log('Results Saved')
-      console.log(searchResults)
-      res.json(searchResults)
-    })
-  });
-  
 })
+  
+
+app.get("/api/receiver/:search", function(req, res) {
+  // let csvWriter = createCsvWriter({
+  //   path: './RESULTS.csv',
+  //   header: [
+  // {id: 'TRACKINGNUMBER', title: 'TRACKINGNUMBER'},
+  // {id: 'ORDERNUMBER', title: 'ORDERNUMBER'},
+  // {id: 'DATE', title: 'DATE'},
+  // {id: 'RECEIVER', title: 'RECEIVER'},
+  // {id: 'COST', title: 'COST'},
+  // {id: 'WEIGHT', title: 'WEIGHT'},
+  // {id: 'RECEIVERORDERNUMBER', title: 'RECEIVERORDERNUMBER'}
+  //   ]
+  // }); 
+  // let searched = req.params.search;
+  // let searchResults = [];
+  // var resultsNow = [];
+  // console.log(searched)
+
+  // fs.createReadStream(backupPath)
+  // .pipe(csv())
+  // .on('data', (data) => resultsNow.push(data))
+  // .on('end', () => {
+    
+  //   console.log('Backup Searched');
+  //   let orderMultiple = resultsNow.filter(results => results.RECEIVER == searched)
+  //   searchResults = orderMultiple
+  //   console.log('-----')
+  //   console.log(searchResults)
+  //   console.log('------')
+
+
+  //   csvWriter.fileWriter.path = `./RESULTS.csv`
+  //   console.log('attempting to use csv-writer')
+  //   csvWriter.writeRecords(searchResults)
+  //   .then(() => {
+  //     console.log('Results Saved')
+  //     console.log(searchResults)
+  //     res.json(searchResults)
+
+  connection.query(`SELECT * FROM tracking WHERE receiver = '${req.params.search}'`, (err, rows) => {
+    if (err) throw err;
+    res.json(rows)
+  })
+    });
 // need to start making a duplicate - in order to connect to the second computer - this will be hard to do remotely.
 
 // app.listen(3000, '0.0.0.0', function() {
