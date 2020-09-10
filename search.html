@@ -121,6 +121,7 @@
         console.log(resultsData)
         
         // runResultsTestTwoQuery(resultsData);
+        runResultsTestTwoQuery(resultsData)
         
       })
   })
@@ -137,6 +138,7 @@
         // document.location.reload()
         // console.log("data should be appearing here")
         // runResultsTestTwoQuery(resultsData);
+        runResultsTestTwoQuery(resultsData)
       })
   })
 
@@ -153,7 +155,7 @@
         console.log(resultsData)
         // // document.location.reload()
         // console.log("---Data Should be Responding here -----")
-        // runResultsTestTwoQuery(resultsData)
+        runResultsTestTwoQuery(resultsData)
       })
   })
   // async function getReceiverData(search) {
@@ -194,37 +196,37 @@
             // $("#orderNumberCol-" + i+1).append('<p>' + resultsData[i].ORDERNUMBER + '<p>')
 
             let orderLine = $("<td>");
-              orderLine.text(resultsData[i].ORDERNUMBER)
+              orderLine.text(resultsData[i].order_number)
             orderLine.attr('id', 'OrderCol-' + i+1)
             newRow.append(orderLine);
 
             let trackingLine = $("<td>")
-              trackingLine.text(resultsData[i].TRACKINGNUMBER)
+              trackingLine.text(resultsData[i].tracking_number)
             trackingLine.attr('id', 'TrackingCol-' + i+1)
             newRow.append(trackingLine);
 
             let dateLine = $("<td>")
-              dateLine.text(resultsData[i].DATE)
+              dateLine.text(resultsData[i].date)
             dateLine.attr('id', 'DateCol-' + i+1)
             newRow.append(dateLine);
 
             let receiverLine = $("<td>")
-              receiverLine.text(resultsData[i].RECEIVER)
+              receiverLine.text(resultsData[i].receiver)
             receiverLine.attr('id', 'ReceiverCol-' + i+1)
             newRow.append(receiverLine);
 
             let costLine = $("<td>")
-              costLine.text(resultsData[i].COST)
+              costLine.text(resultsData[i].cost)
             costLine.attr('id', 'CostCol-' + i+1)
             newRow.append(costLine);
             
             let weightLine = $("<td>")
-              weightLine.text(resultsData[i].WEIGHT)
+              weightLine.text(resultsData[i].weight)
             weightLine.attr('id', 'WeightCol-' + i+1)
             newRow.append(weightLine);
 
             let receiverReferenceLine = $("<td>")
-              receiverReferenceLine.text(resultsData[i].RECEIVERORDERNUMBER)
+              receiverReferenceLine.text(resultsData[i].receiver_order_number)
             receiverReferenceLine.attr('id', 'ReceiverRefCol-' + i+1)
             newRow.append(receiverReferenceLine);
           }
