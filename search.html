@@ -64,7 +64,7 @@
       <th scope='col'>Picklist Number</th>
       <th scope='col'>Tracking Number</th>
       <th scope='col'>Date</th>
-      <th scope='col'>Customer Picklist Number</th>
+      <th scope='col'>Receiver</th>
       <th scope='col'>Cost</th>
       <th scope='col'>Weight</th>
       <th scope='col'>Receiver Reference Number</th>
@@ -226,7 +226,7 @@
             newRow.append(weightLine);
 
             let receiverReferenceLine = $("<td>")
-              receiverReferenceLine.text(resultsData[i].receiver_order_number)
+              receiverReferenceLine.text(resultsData[i].ref_number)
             receiverReferenceLine.attr('id', 'ReceiverRefCol-' + i+1)
             newRow.append(receiverReferenceLine);
           }
