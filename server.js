@@ -273,7 +273,7 @@ app.get("/api/receiver/:search", function(req, res) {
   //     console.log(searchResults)
   //     res.json(searchResults)
 
-  connection.query(`SELECT * FROM tracking WHERE receiver = '${req.params.search}'`, (err, rows) => {
+  connection.query(`SELECT * FROM tracking WHERE ref_number = '${req.params.search}'`, (err, rows) => {
     if (err) throw err;
     res.json(rows)
   })
