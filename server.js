@@ -31,14 +31,18 @@ var connection = mysql.createConnection({
   host: "localhost",
 
   // Your port; if not 3306
+  // test port
   port: 3306,
+
+  // spd port
 
   // Your username
   user: "root",
 
   // Your password
+  // change this to password when using it for testing
   // remember to change this to sacredherbtime when using at SPD
-  password: "password",
+  password: "sacredherbtime",
   database: "tracking_information"
 });
 
