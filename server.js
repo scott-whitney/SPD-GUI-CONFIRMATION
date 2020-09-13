@@ -115,56 +115,10 @@ app.post("/api/clear", async function(req, res) {
 })
 
 app.get("/api/order/:search", async function(req, res) {
-  // let csvWriter = createCsvWriter({
-  //   path: './RESULTS.csv',
-  //   header: [
-  // {id: 'TRACKINGNUMBER', title: 'TRACKINGNUMBER'},
-  // {id: 'ORDERNUMBER', title: 'ORDERNUMBER'},
-  // {id: 'DATE', title: 'DATE'},
-  // {id: 'RECEIVER', title: 'RECEIVER'},
-  // {id: 'COST', title: 'COST'},
-  // {id: 'WEIGHT', title: 'WEIGHT'},
-  // {id: 'RECEIVERORDERNUMBER', title: 'RECEIVERORDERNUMBER'}
-  //   ]
-  // }); 
-  // let searched = req.params.search;
-  // let searchResults = [];
-  // var resultsNow = [];
-  // console.log(searched)
-
-  // fs.createReadStream(backupPath)
-  // .pipe(csv())
-  // .on('data', (data) => resultsNow.push(data))
-  // .on('end', () => {
-    
-  //   console.log('Backup Searched');
-  //   let orderMultiple = resultsNow.filter(results => results.ORDERNUMBER == searched)
-  //   searchResults = orderMultiple
-  //   console.log('-----')
-  //   console.log(searchResults)
-  //   console.log('------')
-
-
-  //   csvWriter.fileWriter.path = `./RESULTS.csv`
-  //   console.log('attempting to use csv-writer')
-  //   csvWriter.writeRecords(searchResults)
-  //   .then(() => {
-  //     console.log('Results Saved')
-  //     res.json(searchResults)
-  //   })
+  
 
   console.log(req.params.search)
   console.log("Bringing up OrderNumer from tracking");
-  // connection.query("SELECT * FROM tracking", function(err, res) {
-  //     if (err) throw err;
-  //     console.table(res)
-  //     // console.log(res)
-  //     // response = res;
-  //     // console.log(response)
-  //     // res.json(res)
-  //     // res.json(res)
-      
-  // })
   connection.query(`SELECT * FROM tracking WHERE order_number = ${req.params.search}`, (err, rows) => {
     if (err) throw err;
     res.json(rows)
@@ -173,6 +127,46 @@ app.get("/api/order/:search", async function(req, res) {
   console.log("awaited?")
 
   });
+  app.get("/api/weight/:search", async function(req, res) {
+  
+
+    console.log(req.params.search)
+    console.log("Bringing up OrderNumer from tracking");
+    connection.query(`SELECT * FROM tracking WHERE weight = ${req.params.search}`, (err, rows) => {
+      if (err) throw err;
+      res.json(rows)
+    })
+  
+    console.log("awaited?")
+  
+    });
+
+    app.get("/api/cost/:search", async function(req, res) {
+  
+
+      console.log(req.params.search)
+      console.log("Bringing up OrderNumer from tracking");
+      connection.query(`SELECT * FROM tracking WHERE cost = ${req.params.search}`, (err, rows) => {
+        if (err) throw err;
+        res.json(rows)
+      })
+    
+      console.log("awaited?")
+    
+      });
+      app.get("/api/customerpicklist/:search", async function(req, res) {
+  
+
+        console.log(req.params.search)
+        console.log("Bringing up OrderNumer from tracking");
+        connection.query(`SELECT * FROM tracking WHERE receiver_order_number = ${req.params.search}`, (err, rows) => {
+          if (err) throw err;
+          res.json(rows)
+        })
+      
+        console.log("awaited?")
+      
+        });
   
 
 
@@ -278,7 +272,7 @@ app.get("/api/receiver/:search", function(req, res) {
   //     console.log(searchResults)
   //     res.json(searchResults)
 
-  connection.query(`SELECT * FROM tracking WHERE ref_number = '${req.params.search}'`, (err, rows) => {
+  connection.query(`SELECT * FROM tracking WHERE receiver = '${req.params.search}'`, (err, rows) => {
     if (err) throw err;
     res.json(rows)
   })

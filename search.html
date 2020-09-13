@@ -42,42 +42,46 @@
     <nav class="navbar navbar-light bg-light">
       <form class="form-inline">
         <input id='searchInput'class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <input id='yearInput'class="form-control mr-sm-2" type="search" placeholder="Year" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0 OrderNumber" id='OrderNumber'type="submit">Picklist Number</button>
         <button class="btn btn-outline-success my-2 my-sm-0 TrackingNumber" type="submit">Tracking Number</button>
-        <button class="btn btn-outline-success my-2 my-sm-0 Receiver" type="submit">Customer Picklist Number</button>
+        <button class="btn btn-outline-success my-2 my-sm-0 CustomerPicklistNumber" type="submit">Customer Picklist Number</button>
+        <button class="btn btn-outline-success my-2 my-sm-0 Weight" type="submit">Weight</button>
+        <button class="btn btn-outline-success my-2 my-sm-0 Cost" type="submit">Cost</button>
+        <button class="btn btn-outline-success my-2 my-sm-0 Receiver" type="submit">Receiver</button>
 
-        <label class="my-1 mr-2" for="inlineFormCustomSelectPref">First</label>
-      <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+        <!-- <label class="my-1 mr-2" for="inlineFormCustomSelectPref">First</label> -->
+      <select class="first-select my-1 mr-sm-2" id="first-date">
         <option selected>Date</option>
-        <option value="1">Jan</option>
-        <option value="2">Feb</option>
-        <option value="3">Mar</option>
-        <option value="3">Apr</option>
-        <option value="3">May</option>
-        <option value="3">Jun</option>
-        <option value="3">Jul</option>
-        <option value="3">Aug</option>
-        <option value="3">Sep</option>
-        <option value="3">Oct</option>
-        <option value="3">Nov</option>
-        <option value="3">Dec</option>
+        <option value="Jan">Jan</option>
+        <option value="Feb">Feb</option>
+        <option value="Mar">Mar</option>
+        <option value="Apr">Apr</option>
+        <option value="May">May</option>
+        <option value="Jun">Jun</option>
+        <option value="Jul">Jul</option>
+        <option value="Aug">Aug</option>
+        <option value="Sep">Sep</option>
+        <option value="Oct">Oct</option>
+        <option value="Nov">Nov</option>
+        <option value="Dec">Dec</option>
       </select>
 
-      <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Last</label>
-      <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+      <!-- <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Last</label> -->
+      <select class="second-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
         <option selected>Date</option>
-        <option value="1">Jan</option>
-        <option value="2">Feb</option>
-        <option value="3">Mar</option>
-        <option value="3">Apr</option>
-        <option value="3">May</option>
-        <option value="3">Jun</option>
-        <option value="3">Jul</option>
-        <option value="3">Aug</option>
-        <option value="3">Sep</option>
-        <option value="3">Oct</option>
-        <option value="3">Nov</option>
-        <option value="3">Dec</option>
+        <option value="Jan">Jan</option>
+        <option value="Feb">Feb</option>
+        <option value="Mar">Mar</option>
+        <option value="Apr">Apr</option>
+        <option value="May">May</option>
+        <option value="Jun">Jun</option>
+        <option value="Jul">Jul</option>
+        <option value="Aug">Aug</option>
+        <option value="Sep">Sep</option>
+        <option value="Oct">Oct</option>
+        <option value="Nov">Nov</option>
+        <option value="Dec">Dec</option>
       </select>
 
       </form>
@@ -87,42 +91,7 @@
     </nav>
 
 
-    <!-- <form class="form-inline">
-      <label class="my-1 mr-2" for="inlineFormCustomSelectPref">First</label>
-      <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-        <option selected>Date</option>
-        <option value="1">Jan</option>
-        <option value="2">Feb</option>
-        <option value="3">Mar</option>
-        <option value="3">Apr</option>
-        <option value="3">May</option>
-        <option value="3">Jun</option>
-        <option value="3">Jul</option>
-        <option value="3">Aug</option>
-        <option value="3">Sep</option>
-        <option value="3">Oct</option>
-        <option value="3">Nov</option>
-        <option value="3">Dec</option>
-      </select>
-
-      <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Last</label>
-      <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-        <option selected>Date</option>
-        <option value="1">Jan</option>
-        <option value="2">Feb</option>
-        <option value="3">Mar</option>
-        <option value="3">Apr</option>
-        <option value="3">May</option>
-        <option value="3">Jun</option>
-        <option value="3">Jul</option>
-        <option value="3">Aug</option>
-        <option value="3">Sep</option>
-        <option value="3">Oct</option>
-        <option value="3">Nov</option>
-        <option value="3">Dec</option>
-      </select>
-
-    </form> -->
+ 
   </div>
 
   <div class="panel panel-default">
@@ -189,7 +158,12 @@
   $(".OrderNumber").on("click", async function() {
     event.preventDefault()
     search = $('#searchInput').val()
-    console.log(search)
+    year = $('#yearInput').val()
+    first = $('#first-date').val()
+    second = $('#second-date').val()
+    console.log(first)
+    console.log(second)
+    console.log(year)
     console.log("Order Number")
     var currentURL = window.location.origin
     await $.ajax({url: currentURL + "/api/order" + `/${search}`, method: "GET"})
@@ -221,10 +195,85 @@
   $(".Receiver").on("click", async function() {
     event.preventDefault()
     search = $('#searchInput').val()
+    year = $('#yearInput').val()
+    first = $('#first-date').val()
+    second = $('#second-date').val()
+    console.log(first)
+    console.log(second)
+    console.log(year)
     console.log("receiver")
     console.log(search)
     var currentURL = window.location.origin
     await $.ajax({url: currentURL + "/api/receiver" + `/${search}`, method: "GET"})
+   
+    
+    .done(function(resultsData) {
+        console.log(resultsData)
+        // // document.location.reload()
+        // console.log("---Data Should be Responding here -----")
+        runResultsTestTwoQuery(resultsData)
+      })
+  })
+
+  $(".Weight").on("click", async function() {
+    event.preventDefault()
+    search = $('#searchInput').val()
+    year = $('#yearInput').val()
+    first = $('#first-date').val()
+    second = $('#second-date').val()
+    console.log(first)
+    console.log(second)
+    console.log(year)
+    console.log("receiver")
+    console.log(search)
+    var currentURL = window.location.origin
+    await $.ajax({url: currentURL + "/api/weight" + `/${search}`, method: "GET"})
+   
+    
+    .done(function(resultsData) {
+        console.log(resultsData)
+        // // document.location.reload()
+        // console.log("---Data Should be Responding here -----")
+        runResultsTestTwoQuery(resultsData)
+      })
+  })
+
+  $(".Cost").on("click", async function() {
+    event.preventDefault()
+    search = $('#searchInput').val()
+    year = $('#yearInput').val()
+    first = $('#first-date').val()
+    second = $('#second-date').val()
+    console.log(first)
+    console.log(second)
+    console.log(year)
+    console.log("receiver")
+    console.log(search)
+    var currentURL = window.location.origin
+    await $.ajax({url: currentURL + "/api/cost" + `/${search}`, method: "GET"})
+   
+    
+    .done(function(resultsData) {
+        console.log(resultsData)
+        // // document.location.reload()
+        // console.log("---Data Should be Responding here -----")
+        runResultsTestTwoQuery(resultsData)
+      })
+  })
+
+  $(".CustomerPicklistNumber").on("click", async function() {
+    event.preventDefault()
+    search = $('#searchInput').val()
+    year = $('#yearInput').val()
+    first = $('#first-date').val()
+    second = $('#second-date').val()
+    console.log(first)
+    console.log(second)
+    console.log(year)
+    console.log("receiver")
+    console.log(search)
+    var currentURL = window.location.origin
+    await $.ajax({url: currentURL + "/api/customerpicklist" + `/${search}`, method: "GET"})
    
     
     .done(function(resultsData) {
