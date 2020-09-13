@@ -1,5 +1,7 @@
 const express = require("express");
 const path = require("path");
+const Chart = require('chart.js');
+
 const csv = require('csv-parser');
 var mysql = require("mysql");
 const fs = require('fs');
@@ -42,7 +44,7 @@ var connection = mysql.createConnection({
   // Your password
   // change this to password when using it for testing
   // remember to change this to sacredherbtime when using at SPD
-  password: "sacredherbtime",
+  password: "password",
   database: "tracking_information"
 });
 
@@ -69,6 +71,9 @@ app.get("/subfolder", function(req, res) {
 });
 app.get("/confirmations", function(req, res) {
   res.sendFile(path.join(__dirname, "confirmations.html"))
+});
+app.get("/graph", function(req, res) {
+  res.sendFile(path.join(__dirname, "graphs.html"))
 });
 
 
