@@ -120,6 +120,24 @@
   </tbody>
 </table>
 
+  <nav aria-label="Page navigation example">
+    <ul class="pagination" id="pagination-rows">
+
+
+    </ul>
+  </nav>
+
+  <!-- <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+  <li class="page-item"><a class="page-link" href="#">1</a></li>
+  <li class="page-item"><a class="page-link" href="#">2</a></li>
+  <li class="page-item"><a class="page-link" href="#">3</a></li>
+  <li class="page-item"><a class="page-link" href="#">Next</a></li> -->
+
+
+
+
+
+
 
  
  
@@ -292,9 +310,11 @@
 
   // }
 
+
   $(".Clear").on("click", async function() {
     event.preventDefault()
-    location.reload()
+    $('#tableSectionResults').empty()
+    $('#pagination-rows').empty()
     // console.log("clear")
     var currentURL = window.location.origin
     await $.ajax({url: currentURL + "/api/clear", method: "POST"})
@@ -304,10 +324,171 @@
       
     })
   })
+
+  function runPagenationSetup(searchAmount, key) {
+
+    previousButton()
+    // if(searchAmount > 5){
+    //   pageNumber = searchAmount/5
+    //   console.log(pageNumber)
+    // }
+    nextButton()
+    
+    
+  }
+  function nextButton() {
+    console.log("running Pagenation Setup")
+
+      let pageLink = $("<a>")
+      let pageLink0 = $("<a>")
+      let pagePrevious = $("<li>")
+      let pageNext = $("<li>")
+        pagePrevious.attr('class', 'page-item')
+        pageNext.attr('class', 'page-item')
+        pageLink.attr('class', 'page-link nextPage')
+        pageLink.attr('type', 'submit')
+        pageLink.attr('href', '#')
+        pageLink.text('Next')
+
+      $('#pagination-rows').append(pageNext)
+      pageNext.append(pageLink)
+
+      $(".nextPage").on("click", async function() {
+        event.preventDefault()
+        console.log("eyy we clicked")
+        key = 0;
+        key++
+        console.log(key)
+        var currentURL = window.location.origin
+        await $.ajax({url: currentURL + "/api/next" + `/${key}`, method: "GET"})
+        .done(function(resultsData) {
+        console.log(resultsData)
+
+        // location.reload()
+        resetTable()
+        runResultsTestThreeQuery(resultsData, key);
+        
+        
+      })
+  })
+  }
+  function previousButton() {
+    console.log("running Pagenation Setup")
+
+      let pageLink = $("<a>")
+      let pageLink0 = $("<a>")
+      let pagePrevious = $("<li>")
+      let pageNext = $("<li>")
+        pagePrevious.attr('class', 'page-item')
+        pageNext.attr('class', 'page-item')
+        pageLink.attr('class', 'page-link previousPage')
+        pageLink.attr('type', 'submit')
+        pageLink.attr('href', '#')
+        pageLink.text('Previous')
+
+      $('#pagination-rows').append(pagePrevious)
+      pagePrevious.append(pageLink)
+
+      $(".previousPage").on("click", async function() {
+        event.preventDefault()
+        console.log("eyy we clicked")
+        key = 0
+        key++
+        console.log(key)
+        var currentURL = window.location.origin
+        await $.ajax({url: currentURL + "/api/previous" + `/${key}`, method: "GET"})
+        .done(function(resultsData) {
+        console.log(resultsData)
+
+        // location.reload()
+        resetTable()
+        runResultsTestThreeQuery(resultsData);
+        
+        
+      })
+  })
+    // pagination previous button - api call for next
+  }
+
+  function resetTable() {
+    console.log("attempting to use .empty")
+    $('#tableSectionResults').empty()
+    $('#pagination-rows').empty()
+  }
+
+  function runResultsTestThreeQuery(resultsData, key) {
+
+    resultList = resultsData.length
+    runPagenationSetup()
+
+
+
+    for(var i=0; i < resultList; i++){
+            
+            let newRow = $("<tr>")
+              $('#tableSectionResults').append(newRow)
+
+            let numberLine = $(`<th>`);
+              numberLine.text(i)
+            // orderLine.addClass('col-sm');
+            numberLine.attr('id', 'NumberCol-' + i+1)
+            numberLine.attr('scope', 'row')
+            newRow.append(numberLine);
+            // $("#orderNumberCol-" + i+1).append('<p>' + resultsData[i].ORDERNUMBER + '<p>')
+
+            let orderLine = $("<td>");
+              orderLine.text(resultsData[i].order_number)
+            orderLine.attr('id', 'OrderCol-' + i+1)
+            newRow.append(orderLine);
+
+            let trackingLine = $("<td>")
+              trackingLine.text(resultsData[i].tracking_number)
+            trackingLine.attr('id', 'TrackingCol-' + i+1)
+            newRow.append(trackingLine);
+
+            let dateLine = $("<td>")
+              dateLine.text(resultsData[i].date)
+            dateLine.attr('id', 'DateCol-' + i+1)
+            newRow.append(dateLine);
+
+            let receiverLine = $("<td>")
+              receiverLine.text(resultsData[i].receiver)
+            receiverLine.attr('id', 'ReceiverCol-' + i+1)
+            newRow.append(receiverLine);
+
+            let costLine = $("<td>")
+              costLine.text(resultsData[i].cost)
+            costLine.attr('id', 'CostCol-' + i+1)
+            newRow.append(costLine);
+            
+            let weightLine = $("<td>")
+              weightLine.text(resultsData[i].weight)
+            weightLine.attr('id', 'WeightCol-' + i+1)
+            newRow.append(weightLine);
+
+            let receiverReferenceLine = $("<td>")
+              receiverReferenceLine.text(resultsData[i].ref_number)
+            receiverReferenceLine.attr('id', 'ReceiverRefCol-' + i+1)
+            newRow.append(receiverReferenceLine);
+          }
+
+  }
+
  function runResultsTestTwoQuery(resultsData) {
-   console.log("runResultsTestTwo")
-   console.log(resultsData)
-  for(var i=0; i<resultsData.length; i++){
+   searchAmount = (resultsData[resultsData.length - 1])
+
+   
+    resultList = 0;
+   if(searchAmount < 5){
+     resultList = searchAmount
+   } else {
+     resultList = 5
+      runPagenationSetup(searchAmount, resultList)
+   }
+   
+
+
+  for(var i=0; i < resultList; i++){
             
             let newRow = $("<tr>")
               $('#tableSectionResults').append(newRow)

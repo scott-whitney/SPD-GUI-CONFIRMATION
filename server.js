@@ -20,6 +20,7 @@ const csvWriter = createCsvWriter({
 }); 
 
 var results = [];
+var keyPage = 0;
 var currentSearch = []
 var newSubFolder = []
 var updateResults = []
@@ -106,6 +107,7 @@ app.get("/api/search", function(req, res) {
 
 app.post("/api/clear", async function(req, res) {
   console.log("begining to clear")
+  keyPage = 0;
 
   await fs.writeFile('./RESULTS.csv', 'TRACKINGNUMBER,ORDERNUMBER,DATE,RECEIVER,COST,WEIGHT,RECEIVERORDERNUMBER', function(){console.log('done')})
 
@@ -121,12 +123,27 @@ app.get("/api/order/:search", async function(req, res) {
   console.log("Bringing up OrderNumer from tracking");
   connection.query(`SELECT * FROM tracking WHERE order_number = ${req.params.search}`, (err, rows) => {
     if (err) throw err;
-    res.json(rows)
+    
+    results = rows
+    firstBatch = []
+    pagenation = 0;
+      if(results.length < 51){
+        pagenation = results.length
+      } else {
+        pagenation = 50
+      }
+    for(var i =0; i < pagenation; i ++){
+      console.log(i)
+      firstBatch.push(results[i])
+    }
+    firstBatch.push(results.length)
+    console.log(firstBatch)
+
+    res.json(firstBatch)
   })
-
   console.log("awaited?")
-
   });
+
   app.get("/api/weight/:search", async function(req, res) {
   
 
@@ -148,6 +165,7 @@ app.get("/api/order/:search", async function(req, res) {
       console.log("Bringing up OrderNumer from tracking");
       connection.query(`SELECT * FROM tracking WHERE cost = ${req.params.search}`, (err, rows) => {
         if (err) throw err;
+
         res.json(rows)
       })
     
@@ -231,7 +249,63 @@ app.get("/api/confirmations", function(req, res) {
   // if there are none come back with a warning saying "no shipping data found for todays date - this may be because end of day hasn't updated the database yet"
 
 })
+
+app.get("/api/next/:key", function(req, res) {
+
+  keyPage++
+  console.log(keyPage)
+  console.log("------------------")
+
+  let pageLimit = 0
+  let resultsRemaining = results.length - (keyPage * 5)
+  let nextBatch = []
+console.log("------ begining if statement ----------")
+  if(resultsRemaining < 6){
+    pageLimit = resultsRemaining
+  } else {
+    pageLimit = 5
+  }
+  console.log("---------begining for loop --------")
+  for(var i = 0; i < pageLimit; i++ ){
+    console.log(keyPage)
+    nextBatch.push(results[(keyPage * 5) + i])
+  }
+  console.log(nextBatch)
+  res.json(nextBatch)
+
+})
+
+app.get("/api/previous/:key", function(req, res) {
+  keyPage--
+
+  let pageLimit = 0
+  let resultsRemaining = results.length - (keyPage * 5)
+  let nextBatch = []
+
+  if(keyPage == 0){
+    for(var i = 0; i < 5; i++){
+      nextBatch.push(results[i])
+    }
+    console.log(nextBatch)
+    res.json(nextBatch)
+  }
+
+
+
+  if(resultsRemaining < 6){
+    pageLimit = resultsRemaining
+  } else {
+    pageLimit = 5
+  }
   
+  for(var i = 0; i < pageLimit; i++ ){
+    nextBatch.push(results[(keyPage * 5) + i])
+  }
+  console.log(nextBatch)
+  res.json(nextBatch)
+
+
+})
 
 app.get("/api/receiver/:search", function(req, res) {
   // let csvWriter = createCsvWriter({
@@ -274,7 +348,22 @@ app.get("/api/receiver/:search", function(req, res) {
 
   connection.query(`SELECT * FROM tracking WHERE receiver = '${req.params.search}'`, (err, rows) => {
     if (err) throw err;
-    res.json(rows)
+    results = rows
+    firstBatch = []
+    pagenation = 0;
+      if(results.length < 6){
+        pagenation = results.length
+      } else {
+        pagenation = 5
+      }
+    for(var i =0; i < pagenation; i ++){
+      console.log(i)
+      firstBatch.push(results[i])
+    }
+    firstBatch.push(results.length)
+    console.log(firstBatch)
+
+    res.json(firstBatch)
   })
     });
 // need to start making a duplicate - in order to connect to the second computer - this will be hard to do remotely.
