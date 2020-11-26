@@ -45,7 +45,9 @@ var connection = mysql.createConnection({
   // Your password
   // change this to password when using it for testing
   // remember to change this to sacredherbtime when using at SPD
-  password: "password",
+  // normally password
+  // spd password is sacredherbtime
+  password: "sacredherbtime",
   database: "tracking_information"
 });
 
