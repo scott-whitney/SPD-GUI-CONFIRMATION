@@ -347,8 +347,9 @@ app.get("/api/receiver/:search", function(req, res) {
   //     console.log('Results Saved')
   //     console.log(searchResults)
   //     res.json(searchResults)
-
-  connection.query(`SELECT * FROM tracking WHERE receiver = '${req.params.search}'`, (err, rows) => {
+// change this Query to receiver when testing
+// change this to ref_number when using at SPD
+  connection.query(`SELECT * FROM tracking WHERE ref_number = '${req.params.search}'`, (err, rows) => {
     if (err) throw err;
     results = rows
     firstBatch = []
